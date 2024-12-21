@@ -1,0 +1,67 @@
+body {
+    margin: 0;
+    height: 100vh;
+    background-color: #1c1c1c; /* A dark theme for a premium poker feel */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    background-image: url('assets/poker_bg2.png'); /* Replace with your background */
+    background-repeat: repeat;
+    background-size: 500px auto;
+    background-position: top left;
+    position: relative;
+}
+
+.content-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 50px 70px; /* Increased padding */
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0px 12px 35px rgba(0, 0, 0, 0.7);
+    max-width: 450px;
+}
+
+.content-box h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 25px 0; /* Increased spacing below heading */
+    line-height: 1.3;
+    color: #ffd700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.content-box p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin: 20px 0 0;
+    line-height: 2.2; /* More line spacing */
+    color: #e0e0e0;
+}
+
+.content-box p span {
+    font-weight: 600; /* Slightly bolder */
+    color: #ffffff;
+    font-size: 1.7rem; /* Slightly larger for emphasis */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.content-box p span.price {
+    font-weight: 700;
+    color: #00aa00; /* Softer green */
+    font-size: 1.9rem; /* Larger for standout effect */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
