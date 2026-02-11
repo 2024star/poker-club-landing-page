@@ -1,67 +1,475 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    margin: 0;
-    height: 100vh;
-    background-color: #1c1c1c; /* A dark theme for a premium poker feel */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  font-family: "Montserrat", sans-serif;
+  height: 100vh;
+  background-color: #0d1b2a;
+  color: #fff;
+  overflow-x: hidden;
+  position: relative;
 }
 
 .container {
-    width: 100%;
-    height: 100%;
-    background-image: url('assets/poker_bg2.png'); /* Replace with your background */
-    background-repeat: repeat;
-    background-size: 500px auto;
-    background-position: top left;
-    position: relative;
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.content-box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.9);
-    padding: 50px 70px; /* Increased padding */
-    border-radius: 15px;
+/* Background with overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("assets/poker_bg2.png");
+  background-size: 500px auto; /* Or 250px auto - adjust as needed */
+  background-repeat: repeat;
+  background-position: top left;
+  z-index: 1;
+}
+
+.background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #020d22e3 30%, #0b5580c0 100%);
+
+  z-index: 1;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 20px 0 30px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.logo .chip {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #d4af37, #ffd700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.logo .chip::before {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #0d1b2a, #1d3557);
+}
+
+.chip-inner {
+  position: relative;
+  z-index: 2;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #d4af37;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0d1b2a;
+  font-weight: 800;
+  font-size: 18px;
+  font-family: "Playfair Display", serif;
+}
+
+.club-name {
+  font-family: "Playfair Display", serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  background: linear-gradient(to right, #ffd700, #d4af37);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  color: #ffffff;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+/* Tournament Card */
+.tournament-card {
+  background: rgba(29, 53, 87, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  overflow: hidden;
+  max-width: 600px;
+  margin: 0 auto 40px;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.tournament-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-header {
+  background: rgba(13, 27, 42, 0.9);
+  padding: 25px 30px;
+  border-bottom: 2px solid #d4af37;
+}
+
+.tournament-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffd700;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+}
+
+.free-entry-badge {
+  display: inline-block;
+  background: linear-gradient(to right, #00aa00, #00cc44);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(0, 170, 0, 0.3);
+}
+
+.card-body {
+  padding: 30px;
+}
+
+.featured-prize {
+  text-align: center;
+  padding-bottom: 25px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.prize-label {
+  font-size: 1rem;
+  color: #b0b0b0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.prize-value {
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: #00ff55;
+  text-shadow: 0 0 10px rgba(0, 255, 85, 0.3);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.prize-unit {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #b0ffc8;
+}
+
+.prize-note {
+  font-size: 1rem;
+  color: #ffd700;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.tournament-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(13, 27, 42, 0.6);
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 4px solid #d4af37;
+}
+
+.detail-item i {
+  font-size: 2rem;
+  color: #ffd700;
+}
+
+.detail-label {
+  font-size: 0.9rem;
+  color: #b0b0b0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+.detail-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.location-section {
+  background: rgba(13, 27, 42, 0.6);
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  color: #ffd700;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.address {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 25px;
+  line-height: 1.4;
+}
+
+.map-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(to right, #1d3557, #0d1b2a);
+  color: white;
+  text-decoration: none;
+  padding: 15px 30px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  border: 2px solid #d4af37;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.map-button:hover {
+  background: linear-gradient(to right, #d4af37, #ffd700);
+  color: #0d1b2a;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+}
+
+.action-note {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(212, 175, 55, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #b0ffc8;
+  border: 1px dashed #d4af37;
+}
+
+.action-note i {
+  color: #ffd700;
+}
+
+.card-footer {
+  background: rgba(13, 27, 42, 0.9);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.chip-stack {
+  display: flex;
+  gap: 10px;
+}
+
+/* Poker Chips in Footer - Fixed Styles */
+.card-footer .chip {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Remove the logo chip's ::before pseudo-element for footer chips */
+.card-footer .chip::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+/* Poker chip edge effect */
+.card-footer .chip::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-sizing: border-box;
+}
+
+/* Poker chip colors */
+.chip-red {
+  background: radial-gradient(circle at 30% 30%, #ff6b6b, #e63946);
+}
+
+.chip-blue {
+  background: radial-gradient(circle at 30% 30%, #457b9d, #1d3557);
+}
+
+.chip-green {
+  background: radial-gradient(circle at 30% 30%, #52b788, #2d6a4f);
+}
+
+/* Poker chip stack effect */
+.chip-stack .chip:nth-child(1) {
+  transform: translateX(-8px) rotate(-5deg);
+}
+
+.chip-stack .chip:nth-child(2) {
+  transform: translateY(-3px);
+  z-index: 1;
+}
+
+.chip-stack .chip:nth-child(3) {
+  transform: translateX(8px) rotate(5deg);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+.contact {
+  margin-top: 5px;
+  color: #d4af37;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card-header {
     text-align: center;
-    box-shadow: 0px 12px 35px rgba(0, 0, 0, 0.7);
-    max-width: 450px;
+  }
+  .container {
+    padding: 15px;
+  }
+
+  .club-name {
+    font-size: 2rem;
+  }
+
+  .tournament-card {
+    margin-bottom: 30px;
+  }
+
+  .prize-value {
+    font-size: 2.5rem;
+  }
+
+  .tournament-details {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .detail-value {
+    font-size: 1.5rem;
+  }
+
+  .address {
+    font-size: 1.2rem;
+  }
+
+  .logo {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  /* Adjust chip size on mobile */
+  .card-footer .chip {
+    width: 40px;
+    height: 40px;
+  }
+
+  .card-footer .chip::before {
+    width: 15px;
+    height: 15px;
+  }
 }
 
-.content-box h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    margin: 0 0 25px 0; /* Increased spacing below heading */
-    line-height: 1.3;
-    color: #ffd700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
+@media (max-width: 480px) {
+  .club-name {
+    font-size: 1.7rem;
+  }
 
-.content-box p {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 400;
-    margin: 20px 0 0;
-    line-height: 2.2; /* More line spacing */
-    color: #e0e0e0;
-}
+  .card-body {
+    padding: 20px;
+  }
 
-.content-box p span {
-    font-weight: 600; /* Slightly bolder */
-    color: #ffffff;
-    font-size: 1.7rem; /* Slightly larger for emphasis */
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+  .prize-value {
+    font-size: 2rem;
+  }
 
-.content-box p span.price {
-    font-weight: 700;
-    color: #00aa00; /* Softer green */
-    font-size: 1.9rem; /* Larger for standout effect */
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  .tournament-title {
+    font-size: 1.5rem;
+  }
+
+  .card-footer .chip {
+    width: 35px;
+    height: 35px;
+  }
+
+  .chip-stack {
+    gap: 5px;
+  }
 }

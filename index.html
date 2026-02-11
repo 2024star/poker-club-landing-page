@@ -1,22 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <title>Albania Poker Club</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Albania Poker Club | Merkuri</title>
+  </head>
+  <body>
+    <div class="background-overlay"></div>
+
     <div class="container">
-        <div class="content-box">
-            <h1>Albania Poker Club</h1>
-            <p>
-                <span>Turne - Hyrja Falas</span><br>
-                <span>Çdo Ditë në Orën 18:00</span><br>
-                <span class="price">20.000 GRT</span>
-            </p>
-        </div>        
+      <header class="header">
+        <div class="logo">
+          <div class="chip">
+            <div class="chip-inner">
+              <span>APC</span>
+            </div>
+          </div>
+          <h1 class="club-name">Albania Poker Club</h1>
+        </div>
+        <div class="tagline">Merkuri - Where Champions Play</div>
+      </header>
+
+      <main class="main-content">
+        <div class="tournament-card">
+          <div class="card-header">
+            <h2 class="tournament-title">TURNE POKERI</h2>
+            <div class="free-entry-badge">HYRJA FALAS</div>
+          </div>
+
+          <div class="card-body">
+            <div class="tournament-details">
+              <div class="detail-item">
+                <i class="fas fa-clock"></i>
+                <div>
+                  <div class="detail-label">FILLON NË</div>
+                  <div class="detail-value">18:00</div>
+                </div>
+              </div>
+
+              <div class="detail-item">
+                <i class="fas fa-calendar-day"></i>
+                <div>
+                  <div class="detail-label">TURNE</div>
+                  <div class="detail-value">ÇDO DITË</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="location-section">
+              <h3 class="section-title">
+                <i class="fas fa-map-marker-alt"></i> LOKACIONI
+              </h3>
+              <p class="address">Bllok - Perballe Piceri ERA</p>
+
+              <a
+                href="https://maps.app.goo.gl/FDHMuUutxPxe1han6"
+                class="map-button"
+                target="_blank"
+              >
+                <i class="fas fa-map"></i>
+                HAPE ADRESËN NË HARTË
+              </a>
+            </div>
+
+            <div class="featured-prize">
+              <div class="prize-label">KJO FISHE KA VLERE</div>
+              <div class="prize-value">
+                10,000 <span class="prize-unit">PIKË</span>
+              </div>
+              <div class="prize-note">E VLEFSHME DERI NË 28 SHKURT</div>
+            </div>
+
+            <!-- <div class="action-note">
+              <p><i class="fas fa-info-circle"></i> Asnjë pagesë regjistrimi</p>
+              <span>• Të gjitha nivelet e aftësisë të mirëseardhura</span>
+            </div> -->
+          </div>
+
+          <div class="card-footer">
+            <div class="chip-stack">
+              <div class="chip chip-red"></div>
+              <div class="chip chip-blue"></div>
+              <div class="chip chip-green"></div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="footer">
+        <p>© 2023 Albania Poker Club. All rights reserved.</p>
+      </footer>
     </div>
-</body>
+
+    <script src="script.js"></script>
+  </body>
 </html>
