@@ -141,6 +141,7 @@ body::before {
   background: rgba(13, 27, 42, 0.9);
   padding: 25px 30px;
   border-bottom: 2px solid #d4af37;
+  text-align: center;
 }
 
 .tournament-title {
@@ -398,9 +399,6 @@ body::before {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .card-header {
-    text-align: center;
-  }
   .container {
     padding: 15px;
   }
