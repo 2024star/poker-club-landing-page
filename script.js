@@ -71,7 +71,7 @@
     document.getElementById('featured-number').textContent = String(day).padStart(2,'0');
     document.getElementById('featured-date').textContent = `${months[month-1].toUpperCase()} ${year} · ${weekdays[new Date(Date.UTC(year,month-1,day)).getUTCDay()].toUpperCase()}`;
     document.getElementById('featured-title').textContent = special ? 'Turneu 5M' : 'Turne ditor';
-    document.getElementById('featured-note').textContent = featuredDate === SPECIAL_DATE ? 'Gjithashtu më 2 dhjetor 2026. E mërkurë · 18:00' : 'Poker për argëtim dhe shoqëri.';
+    document.getElementById('featured-note').textContent = featuredDate === SPECIAL_DATE ? 'Gjithashtu: 2 dhjetor 2026 · 18:00' : '';
     document.getElementById('featured-pill').textContent = special ? 'Turneu 5M' : 'Hyrja falas';
   }
   document.getElementById('show-special').addEventListener('click',()=>{
