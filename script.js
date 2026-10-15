@@ -6,12 +6,15 @@
   const specialDates = new Set([SPECIAL_DATE, '2026-12-02']);
   const months = ['Janar','Shkurt','Mars','Prill','Maj','Qershor','Korrik','Gusht','Shtator','Tetor','Nëntor','Dhjetor'];
   const weekdays = ['E diel','E hënë','E martë','E mërkurë','E enjte','E premte','E shtunë'];
-  const parts = new Intl.DateTimeFormat('en-CA', { timeZone: TIME_ZONE, year:'numeric', month:'2-digit', day:'2-digit' }).formatToParts(new Date());
-  const getPart = type => Number(parts.find(part => part.type === type).value);
-  const today = {year:getPart('year'), month:getPart('month') - 1, day:getPart('day')};
+  function getToday() {
+    const parts = new Intl.DateTimeFormat('en-CA', { timeZone: TIME_ZONE, year:'numeric', month:'2-digit', day:'2-digit' }).formatToParts(new Date());
+    const getPart = type => Number(parts.find(part => part.type === type).value);
+    return {year:getPart('year'), month:getPart('month') - 1, day:getPart('day')};
+  }
+  let today = getToday();
   let shownYear = today.year, shownMonth = today.month;
   const key = (year, month, day) => `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-  const todayKey = key(today.year,today.month,today.day);
+  let todayKey = key(today.year,today.month,today.day);
   let selected = todayKey;
   const grid = document.getElementById('calendar-grid');
   const details = document.getElementById('selected-event');
@@ -56,8 +59,27 @@
   }
   document.getElementById('prev-month').addEventListener('click',()=>navigate(-1));
   document.getElementById('next-month').addEventListener('click',()=>navigate(1));
-  document.getElementById('today').addEventListener('click',()=>{shownYear=today.year;shownMonth=today.month;selected=todayKey;render();showDetails(today.year,today.month,today.day);});
-  document.getElementById('show-special').addEventListener('click',()=>{shownYear=2026;shownMonth=10;selected=SPECIAL_DATE;render();showDetails(2026,10,4);grid.querySelector(`[data-date="${SPECIAL_DATE}"]`).focus();});
+  document.getElementById('today').addEventListener('click',()=>{today=getToday();todayKey=key(today.year,today.month,today.day);updateFeatured();shownYear=today.year;shownMonth=today.month;selected=todayKey;render();showDetails(today.year,today.month,today.day);});
+  let featuredDate = SPECIAL_DATE;
+  function updateFeatured() {
+    const now = getToday();
+    const nowKey = key(now.year,now.month,now.day);
+    featuredDate = [...specialDates].find(date => date >= nowKey) || nowKey;
+    const [year,month,day] = featuredDate.split('-').map(Number);
+    const special = specialDates.has(featuredDate);
+    document.getElementById('featured-kicker').textContent = special ? 'EVENTI I VEÇANTË' : 'TAKIMI I PËRDITSHËM';
+    document.getElementById('featured-number').textContent = String(day).padStart(2,'0');
+    document.getElementById('featured-date').textContent = `${months[month-1].toUpperCase()} ${year} · ${weekdays[new Date(Date.UTC(year,month-1,day)).getUTCDay()].toUpperCase()}`;
+    document.getElementById('featured-title').textContent = special ? 'Turneu 5M' : 'Turne ditor';
+    document.getElementById('featured-note').textContent = featuredDate === SPECIAL_DATE ? 'Gjithashtu më 2 dhjetor 2026. E mërkurë · 18:00' : 'Poker për argëtim dhe shoqëri.';
+    document.getElementById('featured-pill').textContent = special ? 'Turneu 5M' : 'Hyrja falas';
+  }
+  document.getElementById('show-special').addEventListener('click',()=>{
+    updateFeatured();
+    const [year,month,day] = featuredDate.split('-').map(Number);
+    shownYear=year;shownMonth=month-1;selected=featuredDate;render();showDetails(year,month-1,day);grid.querySelector(`[data-date="${featuredDate}"]`).focus();
+  });
+  updateFeatured();
   document.getElementById('year').textContent=today.year;
   render();showDetails(today.year,today.month,today.day);
 })();
