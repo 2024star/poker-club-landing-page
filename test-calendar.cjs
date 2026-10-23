@@ -1,18 +1,48 @@
-const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
-class Element{constructor(){this.children=[];this.dataset={};this.attributes={};this.listeners={};this.classes=new Set();this.classList={add:x=>this.classes.add(x)};}setAttribute(k,v){this.attributes[k]=v;}append(...c){this.children.push(...c);}replaceChildren(){this.children=[];}addEventListener(k,f){this.listeners[k]=f;}focus(){this.focused=true;}querySelector(s){const key=s.match(/data-date="([^"]+)"/)[1];return this.children.find(e=>e.dataset.date===key);}click(){this.listeners.click();}}
-const code=fs.readFileSync(__dirname+'/script.js','utf8');
-function run(instant){const elements={};const document={getElementById:id=>elements[id]??=new Element(),createElement:()=>new Element()};const NativeDate=Date;class FakeDate extends NativeDate{constructor(...a){super(...(a.length?a:[instant]));}}vm.runInNewContext(code,{document,Date:FakeDate,Intl,Set});elements.setTime = value => {instant=value;};return elements;}
-for(const instant of ['2026-10-15T23:30:00Z','2026-03-28T23:30:00Z','2026-10-25T23:30:00Z']){const el=run(instant),grid=el['calendar-grid'];const today=grid.children.find(x=>x.classes.has('is-today'));const expected=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Tirane'}).format(new Date(instant));assert.equal(today.dataset.date,expected);el['show-special'].click();assert.equal(el['month-label'].textContent,'Nëntor 2026');assert.equal(grid.children.filter(x=>x.dataset.date).length,30);assert.equal(grid.children.findIndex(x=>x.dataset.date==='2026-11-04')%7,2);assert.equal(grid.children.filter(x=>x.classes.has('is-special')).length,1);assert.equal(el['selected-event'].children[1].textContent,'18:00 · Europe/Tirane');el['next-month'].click();grid.querySelector('[data-date="2026-12-02"]').click();assert.match(el['selected-event'].children[0].textContent,/Turneu 5M/);assert.doesNotMatch(el['selected-event'].children[1].textContent,/falas/);assert.equal(grid.children.findIndex(x=>x.dataset.date==='2026-12-02')%7,2);el['next-month'].click();assert.equal(el['month-label'].textContent,'Janar 2027');el['prev-month'].click();assert.equal(el['month-label'].textContent,'Dhjetor 2026');grid.querySelector('[data-date="2026-12-03"]').click();assert.match(el['selected-event'].children[1].textContent,/Hyrja falas/);el.today.click();assert.equal(grid.children.find(x=>x.classes.has('is-selected')).dataset.date,expected);console.log('PASS: '+instant+' timezone, daily events, both special dates, labels, navigation, rollover, reset, selection focus');}
+const fs = require('fs');
+const vm = require('vm');
+const assert = require('node:assert/strict');
 
-const midnight=run('2026-11-04T22:30:00Z');
-assert.equal(midnight['featured-number'].textContent,'04');
-midnight.setTime('2026-11-04T23:30:00Z');midnight.today.click();
-assert.equal(midnight['calendar-grid'].children.find(x=>x.classes.has('is-today')).dataset.date,'2026-11-05');
-assert.equal(midnight['featured-number'].textContent,'02');
-assert.match(midnight['featured-date'].textContent,/DHJETOR/);
-midnight['show-special'].click();assert.match(midnight['selected-event'].children[0].textContent,/2 dhjetor 2026/);
-midnight.setTime('2026-12-02T23:30:00Z');midnight.today.click();
-assert.equal(midnight['featured-title'].textContent,'Turne ditor');
-assert.equal(midnight['featured-pill'].textContent,'Hyrja falas');
-midnight['show-special'].click();assert.match(midnight['selected-event'].children[0].textContent,/3 dhjetor 2026/);
-console.log('PASS: midnight refresh, feature advances Nov4 → Dec2 → ordinary daily event, special navigation follows feature');
+const html = fs.readFileSync(__dirname + '/index.html', 'utf8');
+const script = fs.readFileSync(__dirname + '/script.js', 'utf8');
+const styles = fs.readFileSync(__dirname + '/styles.css', 'utf8');
+const tableBody = html.match(/<tbody id="events-body">([\s\S]*?)<\/tbody>/)?.[1] || '';
+const rows = tableBody.match(/<tr\b[\s\S]*?<\/tr>/g) || [];
+
+assert.equal(rows.length, 3, 'The compact events table must contain exactly three rows');
+assert.match(rows[0], /Çdo ditë/);
+assert.match(rows[0], /Turne 20\.000 i garantuar/);
+assert.match(rows[0], /Hyrja falas/);
+assert.match(rows[0], /18:00/);
+
+assert.match(rows[1], /data-date="2026-11-04"/);
+assert.match(rows[1], /4 nëntor 2026/);
+assert.match(rows[1], /Special Event 5M/);
+assert.match(rows[1], /18:00/);
+assert.doesNotMatch(rows[1], /falas/i);
+
+assert.match(rows[2], /data-date="2026-12-02"/);
+assert.match(rows[2], /2 dhjetor 2026/);
+assert.match(rows[2], /Special Event 5M/);
+assert.match(rows[2], /18:00/);
+assert.doesNotMatch(rows[2], /falas/i);
+
+assert.match(html, /Deri më 31 dhjetor 2026/);
+assert.match(html, /Turneu ditor nuk aplikohet më 4 nëntor dhe 2 dhjetor 2026\./);
+assert.match(html, /href="https:\/\/www\.google\.com\/maps\/dir\/\?api=1&amp;destination=41\.3203651%2C19\.814634&amp;travelmode=driving"/);
+assert.match(html, />Drive to location ↗/);
+assert.match(styles, /\.brand img\{display:block;width:128px;height:auto;/);
+assert.match(styles, /@media\(max-width:520px\)[\s\S]*?\.brand img\{width:112px\}/);
+assert.match(styles, /\.button\{display:inline-flex;background:#b42318;color:#fff;/);
+assert.match(styles, /\.button:hover\{background:#8f1d14\}/);
+assert.match(styles, /\.button:focus-visible\{outline-color:#8f1d14;box-shadow:0 0 0 2px #fff\}/);
+
+const year = { textContent: '' };
+class FakeDate extends Date { constructor() { super('2026-10-22T12:00:00Z'); } }
+vm.runInNewContext(script, {
+  document: { getElementById: id => id === 'year' ? year : null },
+  Date: FakeDate,
+  Intl
+});
+assert.equal(year.textContent, '2026');
+
+console.log('PASS: compact three-row schedule, exact event facts, special-event exclusions, unchanged directions link');
