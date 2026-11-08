@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
-const message = 'Duke paraqitur kete Chips qe ke ne dore, mund te marash pjese ne turneun 5M';
+const message = 'Ky chips qe ke ne dore, eshte bilete hyrje per turneun e radhes 5M i Garantuar.';
 (async () => {
   const browser = await chromium.launch({ headless: true, executablePath: process.env.CHROMIUM_PATH || undefined });
   const page = await browser.newPage();
